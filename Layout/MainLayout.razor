@@ -1,16 +1,119 @@
 ﻿@inherits LayoutComponentBase
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
+<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" Theme="_currentTheme" />
 
-        <article class="content px-4">
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+@code
+{
+    private bool _open = true;
+    private bool _isDarkMode;
+    private MudThemeProvider _mudThemeProvider;
+
+    MudTheme _currentTheme = new MudTheme()
+        {
+            PaletteLight = new PaletteLight()
+            {
+                Primary = "#3d85c6",
+                Secondary = "#4CAF50",
+                Info = "#64a7e2",
+                Success = "#2ECC40",
+                Warning = "#FFC107",
+                Error = "#FF0000",
+                AppbarBackground = "#3d85c6",
+                TextPrimary = "#0c1b28",
+                TextSecondary = "#0c1b28",
+                DrawerBackground = "#0c1b28",
+                Background = "#daeeff",
+                Surface = "#daeeff"
+                // more color properties
+            },
+            PaletteDark = new PaletteDark()
+            {
+                Primary = "#3d85c6",
+                Secondary = "#607D8B",
+                Info = "#a4c2dd",
+                Success = "#2ECC40",
+                Warning = "#dc2d7e",
+                Error = "#de2000",
+                AppbarBackground = "#3d85c6",
+                TextPrimary = "#FFFFFF",
+                TextSecondary = "#BDBDBD",
+                DrawerBackground = "#0c1b28",
+                Background = "#316a9e",
+                Surface = "#316a9e"
+                // more color properties
+            }
+        };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+            StateHasChanged();
+        }
+    }
+    private Task OnSystemPreferenceChanged(bool newValue)
+    {
+        _isDarkMode = newValue;
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    void ThemeToggle() => _isDarkMode = !_isDarkMode;
+    private void ToggleDrawer()
+    {
+        _open = !_open;
+    }
+}
+
+
+<MudLayout>
+    <MudAppBar Elevation="1" Dense="false">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+        <MudSpacer />
+        <MudButton Href="#"
+                   Target="_blank"
+                   Rel="nofollow noopener"
+                   Variant="Variant.Outlined"
+                   EndIcon="@Icons.Material.Outlined.PictureAsPdf"
+                   Color="Color.Inherit">
+            My Resume
+        </MudButton>
+        <MudToggleIconButton Icon="@Icons.Material.Filled.LightMode"
+                             ToggledIcon="@Icons.Material.Filled.DarkMode"
+                             Color="Color.Inherit"
+                             Class="nav-button"
+                             ToggledChanged="@ThemeToggle" />
+    </MudAppBar>
+    <MudDrawer @bind-Open="@_open" Elevation="1">
+        <MudNavMenu Bordered="false" Color="Color.Primary">
+            <MudPaper Height="var(--mud-appbar-height)" Elevation="1" Square="true">
+                <MudText Typo="Typo.h6" Class="px-4 pt-1">Mak Mendelson</MudText>
+                <MudText Typo="Typo.body2" Class="px-4 mud-text-primary">UI/UX Designer & Front-End Dev.</MudText>
+            </MudPaper>
+            <MudDivider Class="" />
+            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.FormatListBulleted" IconColor="Color.Inherit">Skills</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Web" IconColor="Color.Inherit">Web Apps</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.DesignServices" IconColor="Color.Inherit">Design</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.SportsEsports" IconColor="Color.Inherit">Games & Art</MudNavLink>
+        </MudNavMenu>
+    </MudDrawer>
+    <MudMainContent Class="pa-8">
+        <MudContainer Class="mt-8 pt-8" Gutters="false">
             @Body
-        </article>
-    </main>
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+
+
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
 </div>

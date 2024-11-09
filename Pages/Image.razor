@@ -1,0 +1,12 @@
+﻿@page "/image"
+
+<MudImage Fluid="true" Src="@ImageLoc" Alt="@AltText" ObjectFit="@ObjectFit.Contain" Class="@Classes" />
+
+@code {
+    [Parameter]
+    public string ImageLoc { get; set; }
+    [Parameter]
+    public string? AltText { get; set; }
+    [Parameter]
+    public string? Classes{ get; set; }
+}
