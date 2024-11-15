@@ -3,11 +3,23 @@
 <div>
     @Title
 </div>
-<MudCarousel Class="mud-width-full" Style="height:200px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
+<MudCarousel 
+    Class="mud-width-full" 
+    Style="height:200px;" 
+    ShowArrows="@arrows" 
+    ShowBullets="@bullets" 
+    EnableSwipeGesture="@enableSwipeGesture" 
+    AutoCycle="@autocycle" 
+    TData="object">
+
     @foreach (var path_to_image in List_of_Paths)
     {        
-        <MudCarouselItem Transition="transition" Color="@Color.Primary">
+        <MudCarouselItem 
+            Transition="transition" 
+            Color="@Color.Primary">
+
             <Image ImageLoc="@path_to_image.ToString()" AltText="" Classes="" />
+
         </MudCarouselItem>
     }
 </MudCarousel>

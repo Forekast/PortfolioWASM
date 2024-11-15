@@ -1,0 +1,53 @@
+﻿@page "/gallery/{CollectionName}"
+@using PortfolioWASM.Services
+
+@code
+{
+	[Parameter]
+	required public string CollectionName { get; set; }
+	[CascadingParameter]
+	required public ImageDirectory.Collection[] Portfolio { get; set; }
+	// required public dynamic portfolio { get; set; }
+
+	public ImageDirectory.Collection thisCollection { get; set; }
+
+	// private IList<ImageDirectory.Collection> _collection = new List<ImageDirectory.Collection>();
+	// private IList<ImageDirectory.Collection> _collection = Portfolio;
+	protected override async Task OnInitializedAsync()
+	{
+		@foreach (ImageDirectory.Collection collection in Portfolio)
+		{
+			Console.WriteLine(collection.Name);
+			@foreach (ImageDirectory.Gallery gallery in collection.Galleries)
+			{
+				Console.WriteLine(gallery.Name);
+			}
+		}
+
+		ImageDirectory.Collection? temp = Portfolio.Where(x => x.Name == CollectionName).FirstOrDefault();
+
+		@foreach(ImageDirectory.Gallery gallery in temp?.Galleries ?? [])
+		{
+			Console.WriteLine(gallery.Name);
+		}
+
+		Console.WriteLine(temp);
+		thisCollection = temp;
+		Console.WriteLine(thisCollection.Name);
+
+	}
+}
+
+<div>
+	<h3>@CollectionName</h3>
+</div>
+
+<MudGrid>
+	@foreach (ImageDirectory.Gallery gallery in thisCollection.Galleries)
+	{		
+		<MudItem>
+			<MudPaper Class="d-flex align-center justify-center mud-width-full py-8">@gallery.Name</MudPaper>			
+		</MudItem>
+	}
+
+</MudGrid>

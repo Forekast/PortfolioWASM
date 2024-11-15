@@ -1,38 +1,17 @@
 ﻿@page "/"
-@using System.IO;
-@using Newtonsoft.Json;
-@inject HttpClient Http
+@using PortfolioWASM.Services
 
 @code{
-    public class ImageAsset
-    {
-        public required string path;
-        public required string alt;
-    }
 
-    public class ImageDirectory
-    {
-        public required string name;
-        public required ImageAsset[] images;
-
-        public string[] FilePaths {
-            get { return images.Select(asset => Path.Join("img", name, asset.path)).ToArray(); }
-        }
-    }
-
-    public ImageDirectory[] ImageDirectories = [];
-    public required List<string> ImageList { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        string json = await Http.GetStringAsync("img/images.json");
-        ImageDirectories = JsonConvert.DeserializeObject<ImageDirectory[]>(json) ?? [];
-    }
 }
 
-<h1>Counters</h1>
 
-@foreach (ImageDirectory directory in ImageDirectories)
-{
-    <ImageGallery Title="@directory.name" List_of_Paths="directory.FilePaths" />
-}
+<MudGrid>
+@* @foreach (ImageDirectory directory in ImageDirectories)
+{ *@
+    <MudItem>
+
+        @* <ImageGallery Title="NULL" List_of_Paths="NULL" /> *@
+    </MudItem>
+@* } *@
+</MudGrid>
