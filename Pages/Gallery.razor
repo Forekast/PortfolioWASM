@@ -13,7 +13,7 @@
 
 	// private IList<ImageDirectory.Collection> _collection = new List<ImageDirectory.Collection>();
 	// private IList<ImageDirectory.Collection> _collection = Portfolio;
-	protected override async Task OnInitializedAsync()
+	protected override void OnParametersSet()
 	{
 		@foreach (ImageDirectory.Collection collection in Portfolio)
 		{
@@ -46,7 +46,7 @@
 	@foreach (ImageDirectory.Gallery gallery in thisCollection.Galleries)
 	{		
 		<MudItem>
-			<MudPaper Class="d-flex align-center justify-center mud-width-full py-8">@gallery.Name</MudPaper>			
+			<MudPaper Class="d-flex align-center justify-center mud-width-full pa-8">@gallery.Name</MudPaper>			
 		</MudItem>
 	}
 
