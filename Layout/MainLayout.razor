@@ -1,4 +1,12 @@
 ﻿@inherits LayoutComponentBase
+@using System.IO;
+@using Newtonsoft.Json;
+@* @using Newtonsoft.Json.Linq; *@
+@* @using System.Text.Json; *@
+@* @using System.Net.Http;
+@using System.Net.Http.Json; *@
+@using PortfolioWASM.Services
+@inject HttpClient Http
 
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" Theme="_currentTheme" />
 
@@ -68,8 +76,35 @@
     {
         _open = !_open;
     }
+
+    ImageDirectory.Collection[]? Portfolio { get; set; }
+    // dynamic portfolio { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        string fileName = "img/images.json";
+
+        string jsonString = await Http.GetStringAsync(fileName);
+
+        // portfolio = JsonConvert.DeserializeObject(jsonString);
+        // Console.WriteLine(portfolio);
+
+        Portfolio = JsonConvert.DeserializeObject<ImageDirectory.Collection[]>(jsonString);
+
+
+        Console.WriteLine(jsonString);
+
+        @foreach (ImageDirectory.Collection collection in Portfolio ?? [])
+        {
+            Console.WriteLine(collection.Name);
+        }
+
+    }
+
 }
 
+@*
+    Each relevant nav item should bring up a MudGrid, in which each MudItem opens a MudDialog to a MudCarousel containing an ImageSet
+*@
 
 <MudLayout>
     <MudAppBar Elevation="1" Dense="false">
@@ -96,19 +131,20 @@
                 <MudText Typo="Typo.body2" Class="px-4 mud-text-primary">UI/UX Designer & Front-End Dev.</MudText>
             </MudPaper>
             <MudDivider Class="" />
-            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.FormatListBulleted" IconColor="Color.Inherit">Skills</MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Web" IconColor="Color.Inherit">Web Apps</MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.DesignServices" IconColor="Color.Inherit">Design</MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.SportsEsports" IconColor="Color.Inherit">Games & Art</MudNavLink>
+                <MudNavLink Match="NavLinkMatch.All" Href="" Icon="@Icons.Material.Filled.FormatListBulleted" IconColor="Color.Inherit">Skills</MudNavLink>
+                <MudNavLink Match="NavLinkMatch.All" Href="gallery/Web Apps" Icon="@Icons.Material.Filled.Web" IconColor="Color.Inherit">Web Apps</MudNavLink>
+                <MudNavLink Match="NavLinkMatch.All" Href="gallery/Design" Icon="@Icons.Material.Filled.DesignServices" IconColor="Color.Inherit">Design</MudNavLink>
+                <MudNavLink Match="NavLinkMatch.All" Href="gallery/Games & Art" Icon="@Icons.Material.Filled.SportsEsports" IconColor="Color.Inherit">Games & Art</MudNavLink>
         </MudNavMenu>
     </MudDrawer>
     <MudMainContent Class="pa-8">
         <MudContainer Class="mt-8 pt-8" Gutters="false">
-            @Body
+            <CascadingValue Value="@Portfolio" IsFixed="true">
+                @Body
+            </CascadingValue>
         </MudContainer>
     </MudMainContent>
 </MudLayout>
-
 
 
 

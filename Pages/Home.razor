@@ -1,38 +1,17 @@
 ﻿@page "/"
-@using System.IO;
+@using PortfolioWASM.Services
 
 @code{
-    public class FolderModel
-    {
-        public required string FolderName { get; set; }
-        public required List<string> FilePaths { get; set; }
-    }
 
-    public List<FolderModel> Folders = [];
-    public required List<string> ImageList { get; set; }
-
-    protected override void OnInitialized()
-    {
-        string[] imageFolders = Directory.GetDirectories("./wwwroot/img");
-        List<FolderModel> folders = [];
-        foreach (string folderPath in imageFolders)
-        {
-            string folderName = Path.GetFileName(folderPath);
-            string[] filePaths = Directory.GetFiles(folderPath);
-            string[] fileNames = filePaths.Select(path => Path.GetFileName(path)).ToArray();
-            string[] fileDisplayPaths = fileNames.Select(fileName => Path.Join("img", folderName, fileName)).ToArray();
-            folders.Add(new FolderModel
-                {
-                    FolderName = folderName,
-                    FilePaths = fileDisplayPaths.ToList()
-                });
-        }
-        Folders = folders;
-    }
 }
 
 
-@foreach (FolderModel folder in Folders)
-{
-    <ImageGallery Title="@folder.FolderName" List_of_Paths="folder.FilePaths.ToArray()" />
-}
+<MudGrid>
+@* @foreach (ImageDirectory directory in ImageDirectories)
+{ *@
+    <MudItem>
+
+        @* <ImageGallery Title="NULL" List_of_Paths="NULL" /> *@
+    </MudItem>
+@* } *@
+</MudGrid>

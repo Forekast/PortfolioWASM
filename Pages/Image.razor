@@ -1,6 +1,13 @@
 ﻿@page "/image"
 
-<MudImage Fluid="true" Src="@ImageLoc" Alt="@AltText" ObjectFit="@ObjectFit.Contain" Class="@Classes" />
+<div class="d-flex">
+    <MudImage 
+        Fluid="true" 
+        Src="@ImageLoc" 
+        Alt="@AltText" 
+        ObjectFit="@ObjectFit.Contain" 
+        Class="@Classes" />
+</div>
 
 @code {
     [Parameter]
