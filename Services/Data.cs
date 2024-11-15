@@ -20,9 +20,9 @@ namespace PortfolioWASM.Services
             public required string? Description { get; set; }
             public required Image[] Images { get; set; }
 
-            public string[] FilePaths
+            public string[] FilePaths(string PathPrefix)
             {
-                get { return Images.Select(image => Path.Join("img", Name, image.Path)).ToArray(); }
+                return Images.Select(image => Path.Join(PathPrefix, image.Path)).ToArray();
             }
         }
 

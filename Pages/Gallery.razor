@@ -10,6 +10,7 @@
 	// required public dynamic portfolio { get; set; }
 
 	public ImageDirectory.Collection thisCollection { get; set; }
+	public string PathPrefix { get { return Path.Join("img", CollectionName); } }
 
 	// private IList<ImageDirectory.Collection> _collection = new List<ImageDirectory.Collection>();
 	// private IList<ImageDirectory.Collection> _collection = Portfolio;
@@ -46,7 +47,10 @@
 	@foreach (ImageDirectory.Gallery gallery in thisCollection.Galleries)
 	{		
 		<MudItem>
-			<MudPaper Class="d-flex align-center justify-center mud-width-full pa-8">@gallery.Name</MudPaper>			
+			@gallery.Name
+			<MudPaper Class="d-flex align-center justify-center mud-width-full pa-8">
+				<ImageGallery Title="@gallery.Name" List_of_Paths="@gallery.FilePaths(PathPrefix)" />
+			</MudPaper>			
 		</MudItem>
 	}
 
